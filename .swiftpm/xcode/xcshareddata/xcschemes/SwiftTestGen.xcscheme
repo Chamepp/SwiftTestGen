@@ -56,12 +56,21 @@
          runnableDebuggingMode = "0">
          <BuildableReference
             BuildableIdentifier = "primary"
+            BlueprintIdentifier = "SwiftTestGenCLI"
+            BuildableName = "SwiftTestGenCLI"
+            BlueprintName = "SwiftTestGenCLI"
+            ReferencedContainer = "container:">
+         </BuildableReference>
+      </BuildableProductRunnable>
+      <MacroExpansion>
+         <BuildableReference
+            BuildableIdentifier = "primary"
             BlueprintIdentifier = "SwiftTestGen"
             BuildableName = "SwiftTestGen"
             BlueprintName = "SwiftTestGen"
             ReferencedContainer = "container:">
          </BuildableReference>
-      </BuildableProductRunnable>
+      </MacroExpansion>
    </LaunchAction>
    <ProfileAction
       buildConfiguration = "Release"

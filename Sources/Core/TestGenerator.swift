@@ -14,6 +14,16 @@ public struct TestGenerator {
         """
 
         let fileURL = URL(fileURLWithPath: outputPath)
-        try? testCode.write(to: fileURL, atomically: true, encoding: .utf8)
+        let outputDir = fileURL.deletingLastPathComponent()
+
+        do {
+            // Create directory if it doesn’t exist
+            try FileManager.default.createDirectory(at: outputDir, withIntermediateDirectories: true)
+
+            // Write the file
+            try testCode.write(to: fileURL, atomically: true, encoding: .utf8)
+        } catch {
+            print("❌ Failed to write file: \(error)")
+        }
     }
 }

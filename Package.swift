@@ -18,7 +18,9 @@ let package = Package(
         // Core logic module (reusable by CLI)
         .target(
             name: "Core",
-            dependencies: []
+            dependencies: [
+              .product(name: "ArgumentParser", package: "swift-argument-parser")
+            ]
         ),
 
         // CLI tool that uses Core and ArgumentParser
@@ -45,7 +47,10 @@ let package = Package(
         // Tests for Core logic
         .testTarget(
             name: "SwiftTestGenTests",
-            dependencies: ["Core"]
-        )
+            dependencies: [
+                "Core",
+                "SwiftTestGenCLI"
+            ]
+        ),
     ]
 )
