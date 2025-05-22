@@ -12,13 +12,16 @@ let package = Package(
     ],
     dependencies: [
         // Swift Argument Parser for CLI interface
-        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0")
+        .package(url: "https://github.com/apple/swift-argument-parser", from: "1.2.0"),
+        .package(url: "https://github.com/apple/swift-syntax.git", from: "509.0.0"),
     ],
     targets: [
         // Core logic module (reusable by CLI)
         .target(
             name: "Core",
             dependencies: [
+              .product(name: "SwiftSyntax", package: "swift-syntax"),
+              .product(name: "SwiftParser", package: "swift-syntax"),
               .product(name: "ArgumentParser", package: "swift-argument-parser")
             ]
         ),

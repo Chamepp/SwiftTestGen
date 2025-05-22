@@ -7,8 +7,6 @@ public struct FileScanner {
             return []
         }
 
-      print("DEBUG: There are \(contents.filter { $0.hasSuffix(".swift") }.count) swift files available.")
-
         return contents
             .filter { $0.hasSuffix(".swift") }
             .map { "\(path)/\($0)" }

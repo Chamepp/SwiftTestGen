@@ -23,7 +23,7 @@ public struct TestGenerator {
             // Write the file
             try testCode.write(to: fileURL, atomically: true, encoding: .utf8)
         } catch {
-            print("❌ Failed to write file: \(error)")
+            print("Failed to write file: \(error)")
         }
     }
 }
