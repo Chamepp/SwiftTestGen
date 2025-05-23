@@ -1,16 +1,16 @@
-import PackagePlugin
 import Foundation
+import PackagePlugin
 
 @main
 struct SwiftTestGenPlugin: CommandPlugin {
-    func performCommand(context: PluginContext, arguments: [String]) async throws {
-        let tool = try context.tool(named: "SwiftTestGenCLI")
+  func performCommand(context: PluginContext, arguments: [String]) async throws {
+    let tool = try context.tool(named: "SwiftTestGenCLI")
 
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: tool.path.string)
-        process.arguments = arguments
+    let process = Process()
+    process.executableURL = URL(fileURLWithPath: tool.path.string)
+    process.arguments = arguments
 
-        try process.run()
-        process.waitUntilExit()
-    }
+    try process.run()
+    process.waitUntilExit()
+  }
 }
