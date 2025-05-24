@@ -3,7 +3,12 @@ import XCTest
 @testable import Core
 
 final class FileScannerTests: XCTestCase {
+  // A temporary directory to simulate a file system environment for testing,
+  // ensuring test runs do not affect or depend on real project structure.
   var tempDirectoryURL: URL!
+
+  // Creating an instance of file scanner to test its functionality in tests
+  let scanner = FileScanner()
 
   override func setUpWithError() throws {
     // Generate a unique temporary directory for isolating test files.
@@ -48,7 +53,7 @@ final class FileScannerTests: XCTestCase {
 
     // Invoke the function under test, which is responsible for locating `.swift` files.
     // This test checks whether only Swift files are discovered from the given directory.
-    let swiftFiles = FileScanner.swiftFiles(in: path)
+    let swiftFiles = scanner.swiftFiles(in: path)
 
     // Expecting exactly 3 Swift files; other file types should be excluded.
     XCTAssertEqual(swiftFiles.count, 3, "Should find only .swift files")

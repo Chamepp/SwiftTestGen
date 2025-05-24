@@ -1,8 +1,9 @@
 import Foundation
 
 public struct TestGenerator {
+  public init() {}
 
-  public static func generate(for parsedTypes: [ParsedType], target: String, outputPath: String) {
+  public func generate(for parsedTypes: [ParsedType], target: String, outputPath: String) {
 
     for parsedType in parsedTypes {
       let testClassName = "\(parsedType.typeName)Tests"
@@ -23,7 +24,7 @@ public struct TestGenerator {
     }
   }
 
-  private static func generateTestClass(for parsedType: ParsedType, target: String) -> String {
+  private func generateTestClass(for parsedType: ParsedType, target: String) -> String {
     var code = """
       import XCTest
       @testable import \(target)
@@ -52,7 +53,7 @@ public struct TestGenerator {
     return code
   }
 
-  private static func generateTestFunction(for function: ParsedFunction) -> String {
+  func generateTestFunction(for function: ParsedFunction) -> String {
     let asyncKeyword = function.isAsync ? "async " : ""
     let throwsKeyword = function.isThrowing ? "throws " : ""
 

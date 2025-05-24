@@ -8,6 +8,9 @@ final class TestGeneratorTests: XCTestCase {
   var tempDir: URL!
   var outputDir: URL!
 
+  // Creating an instance of file scanner to test its functionality in tests
+  let generator = TestGenerator()
+
   override func setUpWithError() throws {
     // Create a unique temporary directory for this test session.
     // This isolates the test environment and prevents conflicts between test runs.
@@ -46,7 +49,7 @@ final class TestGeneratorTests: XCTestCase {
 
     // Run the core logic: generate test files from parsed type data
     // This is the main unit under test — we validate if it correctly creates XCTest boilerplate.
-    TestGenerator.generate(
+    generator.generate(
       for: [parsedType1, parsedType2], target: targetName, outputPath: outputDir.path)
 
     // Validate the generated test file for UserManager

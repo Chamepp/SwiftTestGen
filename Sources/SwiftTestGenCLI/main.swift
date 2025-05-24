@@ -14,21 +14,24 @@ struct SwiftTestGenCLI: ParsableCommand {
   var output: String?
 
   func run() throws {
-    let sourcePath = source ?? "Sources/\(target)"
+    let targetPath = target
+    let sourcePath = source ?? "Sources/\(targetPath)"
     let testsRootDir = output ?? "Tests"
 
-    print("Scanning folder: \(sourcePath)")
-    let files = FileScanner.swiftFiles(in: sourcePath)
-    print("Found \(files.count) Swift files.")
-
+    let scanner = FileScanner()
     let parser = SwiftFileParser()
+    let generator = TestGenerator()
+
+    print("Scanning folder: \(sourcePath)")
+    let files = scanner.swiftFiles(in: sourcePath)
+    print("Found \(files.count) Swift files.")
 
     for file in files {
       do {
         let parsedTypes = try parser.parseFile(at: file)
         let testFileURL = URL(fileURLWithPath: testsRootDir)
 
-        TestGenerator.generate(for: parsedTypes, target: target, outputPath: testFileURL.path)
+        generator.generate(for: parsedTypes, target: targetPath, outputPath: testFileURL.path)
 
       } catch {
         print("Failed to parse file \(file): \(error)")
