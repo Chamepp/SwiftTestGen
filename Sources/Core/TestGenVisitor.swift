@@ -1,25 +1,35 @@
 import Foundation
 import SwiftSyntax
 
+// TestGenVisitor walks through a SwiftSyntax syntax tree and collects structured metadata
+// about top-level types (classes, structs, enums, protocols) and their function declarations.
+// This isolates traversal logic from parsing and generation concerns, keeping responsibilities clean.
 public class TestGenVisitor: SyntaxVisitor {
-  // Store the final parsed types
+
+  // Exposes the final result: a list of parsed types with their associated functions.
+  // Using `public private(set)` allows external consumers to read the parsed data without modifying it,
+  // preserving data integrity after parsing.
   public private(set) var parsedTypes: [ParsedType] = []
 
-  // Stack to support nested types.
-  // Each element holds (typeName, collectedFunctions)
+  // A stack is used to support nesting (e.g., types inside types),
+  // ensuring correct function association with their parent type during traversal.
   private var typeStack: [(name: String, functions: [ParsedFunction])] = []
 
-  // When we enter a type declaration, push a new context onto the stack.
+  // Visiting a class declaration: push a new context onto the stack.
+  // This begins the scope for collecting class-specific functions.
   public override func visit(_ node: ClassDeclSyntax) -> SyntaxVisitorContinueKind {
     typeStack.append((node.name.text, []))
     return .visitChildren
   }
 
+  // When we finish visiting a class, we pop its context and record the completed type.
+  // This ensures all functions collected while inside the class are correctly grouped.
   public override func visitPost(_ node: ClassDeclSyntax) {
     let completed = typeStack.removeLast()
     parsedTypes.append(ParsedType(typeName: completed.name, functions: completed.functions))
   }
 
+  // Same pattern applies for structs: isolate scope and group methods appropriately.
   public override func visit(_ node: StructDeclSyntax) -> SyntaxVisitorContinueKind {
     typeStack.append((node.name.text, []))
     return .visitChildren
@@ -30,6 +40,8 @@ public class TestGenVisitor: SyntaxVisitor {
     parsedTypes.append(ParsedType(typeName: completed.name, functions: completed.functions))
   }
 
+  // Enums are also visited in the same scoped manner. This allows test generation
+  // to support all common Swift type declarations.
   public override func visit(_ node: EnumDeclSyntax) -> SyntaxVisitorContinueKind {
     typeStack.append((node.name.text, []))
     return .visitChildren
@@ -40,6 +52,7 @@ public class TestGenVisitor: SyntaxVisitor {
     parsedTypes.append(ParsedType(typeName: completed.name, functions: completed.functions))
   }
 
+  // Protocols are included for completeness, as they define expected behaviors and can be tested via mocks or stubs.
   public override func visit(_ node: ProtocolDeclSyntax) -> SyntaxVisitorContinueKind {
     typeStack.append((node.name.text, []))
     return .visitChildren
@@ -50,24 +63,29 @@ public class TestGenVisitor: SyntaxVisitor {
     parsedTypes.append(ParsedType(typeName: completed.name, functions: completed.functions))
   }
 
+  // When encountering a function declaration inside a type, we extract the necessary metadata.
+  // This includes function name, parameters, return type, and whether it supports async or throws behavior.
   public override func visit(_ node: FunctionDeclSyntax) -> SyntaxVisitorContinueKind {
     let functionName = node.name.text
 
-    // Check if the function is async and/or throwing
+    // Determines whether this function uses Swift concurrency or error handling
     let isAsync = node.signature.effectSpecifiers?.asyncSpecifier != nil
     let isThrowing = node.signature.effectSpecifiers?.throwsSpecifier != nil
 
-    // Get return type, if any
+    // Capture the return type if one exists. This helps identify pure functions vs. void operations.
     let returnType = node.signature.returnClause?.type.description.trimmingCharacters(
-      in: .whitespacesAndNewlines)
+      in: .whitespacesAndNewlines
+    )
 
-    // Extract parameters as "name: Type"
+    // Extract the function parameters, formatting them as "name: Type"
+    // so they can be used directly in function calls or test templates.
     let parameters = node.signature.parameterClause.parameters.map { param -> String in
       let paramName = param.firstName.text
       let paramType = param.type.description.trimmingCharacters(in: .whitespacesAndNewlines)
       return "\(paramName): \(paramType)"
     }
 
+    // Construct a ParsedFunction object to store the collected function details.
     let function = ParsedFunction(
       name: functionName,
       isAsync: isAsync,
@@ -76,12 +94,17 @@ public class TestGenVisitor: SyntaxVisitor {
       returnType: returnType
     )
 
-    // Add function to the current top type context if any
+    // Append the function to the current type's context.
+    // By modifying the top of the stack, we ensure correct grouping of functions under the right type.
     if var current = typeStack.last {
       current.functions.append(function)
       typeStack[typeStack.count - 1] = current
     }
 
-    return .skipChildren  // No need to go deeper inside function node
+    // No need to walk deeper into the function body;
+    // we currently care about the signature for now, not its implementation.
+    // This section will be further developed when we want to integrate AI
+    // To pass the body functions for AI test generation
+    return .skipChildren
   }
 }
