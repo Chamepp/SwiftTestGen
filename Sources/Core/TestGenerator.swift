@@ -9,10 +9,9 @@ public struct TestGenerator {
       let testClassName = "\(parsedType.typeName)Tests"
       let testCode = generateTestClass(for: parsedType, target: target)
 
+      let outputDir = URL(fileURLWithPath: outputPath)
       let fileName = "\(testClassName).swift"
-      let fileURL = URL(fileURLWithPath: outputPath).appendingPathComponent(fileName)
-      let outputDir = fileURL.deletingLastPathComponent()
-
+      let fileURL = outputDir.appendingPathComponent(fileName)
       do {
         try FileManager.default.createDirectory(
           at: outputDir, withIntermediateDirectories: true, attributes: nil)
