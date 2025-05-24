@@ -13,15 +13,17 @@ public struct ParsedFunction {
   public let isAsync: Bool
   public let isThrowing: Bool
   public let parameters: [String]  // ["paramName: Type", ...]
+  public let body: String  // e.g. func greet() { print("Hello World") } -> print("Hello World")
   public let returnType: String?  // e.g. "Void" or "String"
 
   public init(
-    name: String, isAsync: Bool, isThrowing: Bool, parameters: [String], returnType: String?
+    name: String, isAsync: Bool, isThrowing: Bool, parameters: [String], body: String, returnType: String?
   ) {
     self.name = name
     self.isAsync = isAsync
     self.isThrowing = isThrowing
     self.parameters = parameters
+    self.body = body
     self.returnType = returnType
   }
 }

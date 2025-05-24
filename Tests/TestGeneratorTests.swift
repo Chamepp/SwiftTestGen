@@ -36,12 +36,39 @@ final class TestGeneratorTests: XCTestCase {
 
     // Represents an async function with parameters and a return type.
     let dummyFunction = ParsedFunction(
-      name: "loadData", isAsync: true, isThrowing: false, parameters: ["param1", "param2"],
-      returnType: "String")
+      name: "loadData",
+      isAsync: true,
+      isThrowing: false,
+      parameters: ["url: URL", "completion: (Result<String, Error>) -> Void"],
+      body: """
+        print("Starting data load from \\(url)")
+        // Simulate network fetch delay
+        await Task.sleep(1_000_000_000) // 1 second
+        let fetchedData = "Sample data from \\(url)"
+        print("Data loaded: \\(fetchedData)")
+        completion(.success(fetchedData))
+        """,
+      returnType: "Void"
+    )
 
     // Represents a throwing function with no parameters and a return type.
     let dummyFunction2 = ParsedFunction(
-      name: "saveData", isAsync: false, isThrowing: true, parameters: [], returnType: "String")
+      name: "saveData",
+      isAsync: false,
+      isThrowing: true,
+      parameters: [],
+      body: """
+        print("Saving data to persistent storage")
+        let success = Bool.random()
+        guard success else {
+          print("Failed to save data")
+          throw NSError(domain: "DataService", code: 500, userInfo: [NSLocalizedDescriptionKey: "Save operation failed"])
+        }
+        print("Data saved successfully")
+        return "Save Completed"
+        """,
+      returnType: "String"
+    )
 
     // These mock types simulate what would be parsed from the app's source code.
     let parsedType1 = ParsedType(typeName: "UserManager", functions: [dummyFunction])

@@ -72,11 +72,6 @@ public class TestGenVisitor: SyntaxVisitor {
     let isAsync = node.signature.effectSpecifiers?.asyncSpecifier != nil
     let isThrowing = node.signature.effectSpecifiers?.throwsSpecifier != nil
 
-    // Capture the return type if one exists. This helps identify pure functions vs. void operations.
-    let returnType = node.signature.returnClause?.type.description.trimmingCharacters(
-      in: .whitespacesAndNewlines
-    )
-
     // Extract the function parameters, formatting them as "name: Type"
     // so they can be used directly in function calls or test templates.
     let parameters = node.signature.parameterClause.parameters.map { param -> String in
@@ -85,12 +80,30 @@ public class TestGenVisitor: SyntaxVisitor {
       return "\(paramName): \(paramType)"
     }
 
+    // Walking deeper into the function body;
+    // This section aims at AI test generation by extracting function body source code as a string
+    // We pass the function body for AI test generation
+    let body: String
+    if let bodyNode = node.body {
+        // Convert the CodeBlockSyntax node back to String preserving formatting
+        body = bodyNode.description.trimmingCharacters(in: .whitespacesAndNewlines)
+    } else {
+        // For function declarations without bodies (e.g., protocol requirements, stubs)
+        body = "// Empty function"
+    }
+
+    // Capture the return type if one exists. This helps identify pure functions vs. void operations.
+    let returnType = node.signature.returnClause?.type.description.trimmingCharacters(
+      in: .whitespacesAndNewlines
+    )
+
     // Construct a ParsedFunction object to store the collected function details.
     let function = ParsedFunction(
       name: functionName,
       isAsync: isAsync,
       isThrowing: isThrowing,
       parameters: parameters,
+      body: body,
       returnType: returnType
     )
 
@@ -101,10 +114,6 @@ public class TestGenVisitor: SyntaxVisitor {
       typeStack[typeStack.count - 1] = current
     }
 
-    // No need to walk deeper into the function body;
-    // we currently care about the signature for now, not its implementation.
-    // This section will be further developed when we want to integrate AI
-    // To pass the body functions for AI test generation
     return .skipChildren
   }
 }
