@@ -27,8 +27,38 @@ final class SwiftTestGenCLITests: XCTestCase {
     // Add minimal Swift source files to mimic user-written code,
     // allowing us to validate if test files are generated accordingly.
     let dummyFiles = [
-      ("User.swift", "class User {}"),
-      ("Product.swift", "class Product {}"),
+      (
+        "User.swift",
+        """
+        class User {
+            var id: Int
+            var name: String
+
+            init(id: Int, name: String) {
+                self.id = id
+                self.name = name
+            }
+
+            func displayName() -> String {
+                return "User: \\(name)"
+            }
+        }
+        """
+      ),
+      (
+        "Product.swift",
+        """
+        struct Product {
+            let id: Int
+            let title: String
+            var isAvailable: Bool
+
+            func description() -> String {
+                return "\\(title) [\\(isAvailable ? "In Stock" : "Out of Stock")]"
+            }
+        }
+        """
+      )
     ]
 
     for (filename, content) in dummyFiles {
@@ -76,10 +106,12 @@ final class SwiftTestGenCLITests: XCTestCase {
       // Check that the generated file includes expected components:
       // 1. @testable import to access internal symbols
       // 2. final class declaration for test class structure
-      // 3. A mention of the original type name to tie test to its source
+      // 3. function declration for test class structure
+      // 4. A mention of the original type name to tie test to its source
       XCTAssertTrue(
         content.contains("@testable import MyModule"), "\(fileName) missing module import")
       XCTAssertTrue(content.contains("final class"), "\(fileName) missing class declaration")
+      XCTAssertTrue(content.contains("func"), "\(fileName) missing function declaration")
       XCTAssertTrue(
         content.contains(originalTypeName), "\(fileName) content does not reference original type")
     }

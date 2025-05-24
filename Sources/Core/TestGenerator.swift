@@ -49,6 +49,7 @@ public struct TestGenerator {
     }
 
     code += "\n}\n"
+
     return code
   }
 
