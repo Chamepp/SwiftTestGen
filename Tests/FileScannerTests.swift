@@ -19,24 +19,41 @@ final class FileScannerTests: XCTestCase {
     // Create the temporary directory where test files will be stored.
     try FileManager.default.createDirectory(at: tempDirectoryURL, withIntermediateDirectories: true)
 
+    // The mock structure we are aiming for which represents
+    // a real world app strcuture.
+
+    // Sources/MyApp/
+    // ├── AppDelegate.swift
+    // ├── README.md
+    // ├── Home.storyboard
+    // └── Features/
+    //     ├── HomeViewController.swift
+    //     └── Shared/
+    //         └── Utils.swift
+
+    // Mapping a structure that represents a real world app structure
+    // in order to test the `FileScanner`recursive search functionality
+    // by creating nested folders.
+    let root = tempDirectoryURL.appendingPathComponent("Sources/MyApp")
+    let nested1 = root.appendingPathComponent("Features")
+    let nested2 = nested1.appendingPathComponent("Shared")
+
+    try FileManager.default.createDirectory(at: nested1, withIntermediateDirectories: true)
+    try FileManager.default.createDirectory(at: nested2, withIntermediateDirectories: true)
+
     // Define a mix of Swift and non-Swift files to validate file filtering behavior.
     // The purpose is to ensure that only `.swift` files are detected by the scanner.
     let files = [
-      "AppDelegate.swift",
-      "HomeViewController.swift",
-      "Utils.swift",
-      "README.md",            // Included to verify that non-code files are ignored.
-      "Home.storyboard",      // Included to simulate a typical Xcode project structure.
+      root.appendingPathComponent("AppDelegate.swift"),
+      root.appendingPathComponent("README.md"),            // Included to verify that non-code files are ignored.
+      root.appendingPathComponent("Home.storyboard"),      // Included to simulate a typical Xcode project structure.
+      nested1.appendingPathComponent("HomeViewController.swift"),
+      nested2.appendingPathComponent("Utils.swift")
     ]
-
-    // Create a mock "Sources/MyApp" directory structure to mimic real-world iOS project layout.
-    let sourcesDir = tempDirectoryURL.appendingPathComponent("Sources/MyApp")
-    try FileManager.default.createDirectory(at: sourcesDir, withIntermediateDirectories: true)
 
     // Write minimal content into each test file to simulate real Swift source files.
     // The actual content is irrelevant—only the file extension matters for this test.
-    for file in files {
-      let fileURL = sourcesDir.appendingPathComponent(file)
+    for fileURL in files {
       try "print(\"Hello\")".write(to: fileURL, atomically: true, encoding: .utf8)
     }
   }

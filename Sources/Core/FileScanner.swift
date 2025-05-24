@@ -10,24 +10,34 @@ public class FileScanner {
   // When this functionality expands, we use this initializer in the future.
   public init() {}
 
-  // This method retrieves all Swift files from the specified directory.
+  // This method retrieves all Swift files from the directory tree(whole project).
   // We filter by ".swift" to limit processing to only source files,
   // which is crucial for avoiding irrelevant files (e.g., JSON, plist, etc.).
   public func swiftFiles(in path: String) -> [String] {
     let fm = FileManager.default
+    var swiftFilePaths: [String] = []
 
-    // Attempt to read the contents of the directory.
+    // Attempt to read the contents of directories and searching for `.swift`
+    // files by using a recursive enumerator to walk through the file tree.
     // If it fails (due to permission issues or non-existent path),
-    // we safely return an empty list to avoid crashing the tool.
-    guard let contents = try? fm.contentsOfDirectory(atPath: path) else {
+    // We safely return an empty list to avoid crashing the tool.
+    // This error can be handled in the near future with the `SwiftTestGenErrors.swift`
+    // alongside other errors.
+    guard let enumerator = fm.enumerator(atPath: path) else {
       return []
+    }
+
+    for case let file as String in enumerator {
+      // Check for .swift extension
+      if file.hasSuffix(".swift") {
+        let fullPath = (path as NSString).appendingPathComponent(file)
+        swiftFilePaths.append(fullPath)
+      }
     }
 
     // We return fully qualified paths to each Swift file
     // to simplify downstream usage (like parsing and code generation).
     // Using full paths ensures tools don't need to resolve relative paths later.
-    return contents
-      .filter { $0.hasSuffix(".swift") }     // Focus only on Swift source files
-      .map { "\(path)/\($0)" }               // Construct full path strings
+    return swiftFilePaths
   }
 }
