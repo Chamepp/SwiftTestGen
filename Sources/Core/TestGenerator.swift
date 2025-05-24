@@ -83,6 +83,8 @@ public struct TestGenerator {
     let testName = "test" + function.name.prefix(1).uppercased() + function.name.dropFirst()
 
     var body = ""
+    body += "        // AI TODO\n"
+
     if function.isAsync {
       body += "        // Await async result\n"
     }
@@ -91,7 +93,7 @@ public struct TestGenerator {
     }
     if !function.parameters.isEmpty {
       // Provide a hint to the AI to populate input values.
-      body += "        // TODO: Provide values for parameters: \(function.parameters.joined(separator: ", "))\n"
+      body += "        // AI TODO: Provide values for parameters: \(function.parameters.joined(separator: ", "))\n"
     }
 
     // Placeholder for the actual function invocation on the System Under Test.
