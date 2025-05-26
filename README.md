@@ -1,7 +1,3 @@
-Absolutely. Here's a fully rewritten and **professional** `README.md` for **SwiftTestGen**, designed to reflect its current capabilities, communicate its purpose clearly, and highlight its practical value to real-world developers—without sounding AI-generated:
-
----
-
 # SwiftTestGen
 
 **SwiftTestGen** is a SwiftPM plugin and command-line tool that intelligently generates unit tests for your Swift packages using static analysis and AI. It is designed to accelerate test coverage, reduce repetitive test writing, and seamlessly integrate into your development workflow.
