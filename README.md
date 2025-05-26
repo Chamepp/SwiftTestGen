@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="https://github.com/Chamepp/SwiftTestGen/blob/main/Logo.png" alt="SwiftTestGen Logo" width="300"/>
+  <img src="https://github.com/Chamepp/SwiftTestGen/blob/main/MainLogo.png" alt="SwiftTestGen Logo" width="150"/>
 </p>
 
 <h1 align="center">SwiftTestGen</h1>
