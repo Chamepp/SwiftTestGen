@@ -9,7 +9,7 @@ final class TestGeneratorTests: XCTestCase {
   var outputDir: URL!
 
   // Creating an instance of file scanner to test its functionality in tests
-  let generator = TestGenerator()
+  let generator = TestGenerator(bodyGenerator: AITestBodyGenerator())
 
   override func setUpWithError() throws {
     // Create a unique temporary directory for this test session.
@@ -28,7 +28,7 @@ final class TestGeneratorTests: XCTestCase {
     try? FileManager.default.removeItem(at: tempDir)
   }
 
-  func testTestFilesGenerationForMultipleParsedTypes() throws {
+  func testTestFilesGenerationForMultipleParsedTypes() async throws {
     let targetName = "MyApp"
 
     // Simulate parsed Swift types as they would appear after analyzing real source code.
@@ -76,7 +76,7 @@ final class TestGeneratorTests: XCTestCase {
 
     // Run the core logic: generate test files from parsed type data
     // This is the main unit under test — we validate if it correctly creates XCTest boilerplate.
-    generator.generate(
+    await generator.generate(
       for: [parsedType1, parsedType2], target: targetName, outputPath: outputDir.path)
 
     // Validate the generated test file for UserManager

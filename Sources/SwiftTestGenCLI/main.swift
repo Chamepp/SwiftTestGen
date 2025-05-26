@@ -21,7 +21,7 @@ struct SwiftTestGenCLI: ParsableCommand {
   @Option(name: .shortAndLong, help: "Output path (default: ./Tests)")
   var output: String?
 
-  func run() throws {
+  func run() async throws {
     // Set paths based on input or fallbacks to default conventions.
     // This approach balances usability (no args needed) with flexibility.
     let targetPath = target
@@ -33,7 +33,8 @@ struct SwiftTestGenCLI: ParsableCommand {
     // and generating tests are distinct steps.
     let scanner = FileScanner()
     let parser = SwiftFileParser()
-    let generator = TestGenerator()
+    let ai = AITestBodyGenerator()
+    let generator = TestGenerator(bodyGenerator: ai)
 
     print("Scanning folder: \(sourcePath)")
 
@@ -48,10 +49,14 @@ struct SwiftTestGenCLI: ParsableCommand {
         // enabling us to generate precise, tailored tests rather than guesswork.
         let parsedTypes = try parser.parseFile(at: file)
 
-        // Generating the test files in the output directory based on parsed types
-        // translates our analysis into concrete code artifacts that
-        // help verify the target's correctness.
-        generator.generate(for: parsedTypes, target: targetPath, outputPath: testsRootDir)
+
+
+        // Converts parsed type information into XCTest-compatible test files.
+        // This step transforms the static analysis of source code into concrete test code.
+        // Generated files are written to the specified output directory to scaffold test
+        // coverage for the target. Later these test files will be updated with the AI generated
+        // content with `AITestBodyGenerator` injected earlier.
+        await generator.generate(for: parsedTypes, target: targetPath, outputPath: testsRootDir)
 
       } catch {
         // Robust error handling here prevents a single failure from stopping

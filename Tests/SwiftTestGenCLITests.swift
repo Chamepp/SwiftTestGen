@@ -73,7 +73,7 @@ final class SwiftTestGenCLITests: XCTestCase {
     try? FileManager.default.removeItem(at: tempDir)
   }
 
-  func testCLIGeneratesTestFilesPerSourceFile() throws {
+  func testCLIGeneratesTestFilesPerSourceFile() async throws {
     // Simulate how a user would invoke the CLI tool from the terminal,
     // providing target, source, and output directories.
     // This helps validate end-to-end integration of the CLI parsing and execution logic.
@@ -84,7 +84,7 @@ final class SwiftTestGenCLITests: XCTestCase {
     ]
 
     let cli = try SwiftTestGenCLI.parse(arguments)
-    try cli.run() // Executes the test generation logic, simulating actual CLI usage
+    try await cli.run() // Executes the test generation logic, simulating actual CLI usage
 
     // These are the expected outputs based on the dummy source files above.
     // We assert both file existence and contents to ensure the generation logic is complete and correct.
