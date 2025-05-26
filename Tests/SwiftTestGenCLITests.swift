@@ -58,7 +58,7 @@ final class SwiftTestGenCLITests: XCTestCase {
             }
         }
         """
-      )
+      ),
     ]
 
     for (filename, content) in dummyFiles {
@@ -84,7 +84,7 @@ final class SwiftTestGenCLITests: XCTestCase {
     ]
 
     let cli = try SwiftTestGenCLI.parse(arguments)
-    try await cli.run() // Executes the test generation logic, simulating actual CLI usage
+    try await cli.run()  // Executes the test generation logic, simulating actual CLI usage
 
     // These are the expected outputs based on the dummy source files above.
     // We assert both file existence and contents to ensure the generation logic is complete and correct.

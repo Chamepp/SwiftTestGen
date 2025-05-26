@@ -45,10 +45,10 @@ final class FileScannerTests: XCTestCase {
     // The purpose is to ensure that only `.swift` files are detected by the scanner.
     let files = [
       root.appendingPathComponent("AppDelegate.swift"),
-      root.appendingPathComponent("README.md"),            // Included to verify that non-code files are ignored.
-      root.appendingPathComponent("Home.storyboard"),      // Included to simulate a typical Xcode project structure.
+      root.appendingPathComponent("README.md"),  // Included to verify that non-code files are ignored.
+      root.appendingPathComponent("Home.storyboard"),  // Included to simulate a typical Xcode project structure.
       nested1.appendingPathComponent("HomeViewController.swift"),
-      nested2.appendingPathComponent("Utils.swift")
+      nested2.appendingPathComponent("Utils.swift"),
     ]
 
     // Write minimal content into each test file to simulate real Swift source files.

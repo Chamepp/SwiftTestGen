@@ -85,11 +85,11 @@ public class TestGenVisitor: SyntaxVisitor {
     // We pass the function body for AI test generation
     let body: String
     if let bodyNode = node.body {
-        // Convert the CodeBlockSyntax node back to String preserving formatting
-        body = bodyNode.description.trimmingCharacters(in: .whitespacesAndNewlines)
+      // Convert the CodeBlockSyntax node back to String preserving formatting
+      body = bodyNode.description.trimmingCharacters(in: .whitespacesAndNewlines)
     } else {
-        // For function declarations without bodies (e.g., protocol requirements, stubs)
-        body = "// Empty function"
+      // For function declarations without bodies (e.g., protocol requirements, stubs)
+      body = "// Empty function"
     }
 
     // Capture the return type if one exists. This helps identify pure functions vs. void operations.

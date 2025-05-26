@@ -68,9 +68,9 @@ final class SwiftFileParserTests: XCTestCase {
     XCTAssertEqual(names, ["syncCall", "asyncCall", "throwingCall", "fullCall"])
 
     // Detailed property checks to ensure async/throwing modifiers are correctly interpreted.
-    XCTAssertFalse(parsedTypes[0].functions[0].isAsync)     // syncCall
-    XCTAssertTrue(parsedTypes[0].functions[1].isAsync)       // asyncCall
-    XCTAssertTrue(parsedTypes[0].functions[2].isThrowing)    // throwingCall
+    XCTAssertFalse(parsedTypes[0].functions[0].isAsync)  // syncCall
+    XCTAssertTrue(parsedTypes[0].functions[1].isAsync)  // asyncCall
+    XCTAssertTrue(parsedTypes[0].functions[2].isThrowing)  // throwingCall
 
     // Check the most complex function: async, throwing, with parameters and return type.
     let fullCall = parsedTypes[0].functions[3]

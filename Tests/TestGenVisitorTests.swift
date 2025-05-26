@@ -24,9 +24,9 @@ final class TestGenVisitorTests: XCTestCase {
     // Define a variety of Swift source files to verify the parser's ability to handle different declarations.
     let files = [
       "HomeViewController.swift",  // class
-      "Model.swift",               // struct
-      "Direction.swift",           // enum
-      "Drawable.swift",            // protocol
+      "Model.swift",  // struct
+      "Direction.swift",  // enum
+      "Drawable.swift",  // protocol
     ]
 
     // Write minimal but representative Swift code into each file to trigger specific parsing behaviors.

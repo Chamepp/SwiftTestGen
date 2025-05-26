@@ -12,9 +12,8 @@ public struct TestGenerator {
   private let bodyGenerator: AITestBodyGenerator
 
   public init(bodyGenerator: AITestBodyGenerator) {
-      self.bodyGenerator = bodyGenerator
+    self.bodyGenerator = bodyGenerator
   }
-
 
   // This method orchestrates the test generation process.
   // For each parsed type (e.g., a class or struct), it creates a corresponding test class file.
@@ -90,41 +89,45 @@ public struct TestGenerator {
   // Otherwise, it falls back to a structured placeholder with helpful TODOs to guide manual completion.
   // This ensures that all test stubs are syntactically valid and ready for extension.
   func generateTestFunction(for function: ParsedFunction, with generatedAITest: String?) -> String {
-      let asyncKeyword = function.isAsync ? "async " : ""
-      let throwsKeyword = function.isThrowing ? "throws " : ""
+    let asyncKeyword = function.isAsync ? "async " : ""
+    let throwsKeyword = function.isThrowing ? "throws " : ""
 
-      // Generate a readable test name that matches naming conventions.
-      let testName = "test" + function.name.prefix(1).uppercased() + function.name.dropFirst()
+    // Generate a readable test name that matches naming conventions.
+    let testName = "test" + function.name.prefix(1).uppercased() + function.name.dropFirst()
 
-      // If AI provided a body, use it. Otherwise fall back to default stub.
-      let body: String
-      if let generated = generatedAITest?.trimmingCharacters(in: .whitespacesAndNewlines), !generated.isEmpty {
-          // Indent each line properly (assuming 8 spaces inside func block)
-          let indented = generated
-              .split(separator: "\n")
-              .map { "        \($0)" }
-              .joined(separator: "\n")
-          body = indented
-      } else {
-          // Fallback placeholder
-          var fallback = ""
-          fallback += "        // AI TODO\n"
+    // If AI provided a body, use it. Otherwise fall back to default stub.
+    let body: String
+    if let generated = generatedAITest?.trimmingCharacters(in: .whitespacesAndNewlines),
+      !generated.isEmpty
+    {
+      // Indent each line properly (assuming 8 spaces inside func block)
+      let indented =
+        generated
+        .split(separator: "\n")
+        .map { "        \($0)" }
+        .joined(separator: "\n")
+      body = indented
+    } else {
+      // Fallback placeholder
+      var fallback = ""
+      fallback += "        // AI TODO\n"
 
-          if function.isAsync {
-              fallback += "        // Await async result\n"
-          }
-          if function.isThrowing {
-              fallback += "        // Use XCTAssertThrowsError or try\n"
-          }
-          if !function.parameters.isEmpty {
-              fallback += "        // AI TODO: Provide values for parameters: \(function.parameters.joined(separator: ", "))\n"
-          }
-
-          fallback += "        // sut.\(function.name)(...)\n"
-          body = fallback
+      if function.isAsync {
+        fallback += "        // Await async result\n"
+      }
+      if function.isThrowing {
+        fallback += "        // Use XCTAssertThrowsError or try\n"
+      }
+      if !function.parameters.isEmpty {
+        fallback +=
+          "        // AI TODO: Provide values for parameters: \(function.parameters.joined(separator: ", "))\n"
       }
 
-      return """
+      fallback += "        // sut.\(function.name)(...)\n"
+      body = fallback
+    }
+
+    return """
           func \(testName)() \(asyncKeyword)\(throwsKeyword){
       \(body)
           }

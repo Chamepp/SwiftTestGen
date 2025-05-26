@@ -17,7 +17,8 @@ public struct ParsedFunction {
   public let returnType: String?  // e.g. "Void" or "String"
 
   public init(
-    name: String, isAsync: Bool, isThrowing: Bool, parameters: [String], body: String, returnType: String?
+    name: String, isAsync: Bool, isThrowing: Bool, parameters: [String], body: String,
+    returnType: String?
   ) {
     self.name = name
     self.isAsync = isAsync

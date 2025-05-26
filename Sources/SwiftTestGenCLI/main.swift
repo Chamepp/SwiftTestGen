@@ -49,8 +49,6 @@ struct SwiftTestGenCLI: ParsableCommand {
         // enabling us to generate precise, tailored tests rather than guesswork.
         let parsedTypes = try parser.parseFile(at: file)
 
-
-
         // Converts parsed type information into XCTest-compatible test files.
         // This step transforms the static analysis of source code into concrete test code.
         // Generated files are written to the specified output directory to scaffold test
