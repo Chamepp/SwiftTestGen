@@ -112,6 +112,3 @@ Contributions are welcome as we continue developing core features and improving 
 
 This project is released under the MIT License.
 
----
-
-Let me know if you’d like a shorter version, a blog-style announcement draft, or documentation for contributors.
