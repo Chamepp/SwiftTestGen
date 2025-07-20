@@ -1,5 +1,5 @@
 <p align="center">
-  <img width="300" height="300" alt="image (2)" src="https://github.com/user-attachments/assets/90282ce5-3aa6-462f-b46a-20f2c17305cf" />
+  <img width="200" height="200" alt="image (2)" src="https://github.com/user-attachments/assets/90282ce5-3aa6-462f-b46a-20f2c17305cf" />
 </p>
 
 <h1 align="center">SwiftTestGen</h1>
