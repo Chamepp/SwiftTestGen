@@ -9,14 +9,58 @@
   for your Swift packages using static analysis and AI.
 </p>
 
+## Introduction
+<p align="left">
+  Code is fast. Testing is slow.  
+  SwiftTestGen bridges the gap.  
+  No more boilerplate. No more test debt.  
+  Just clean, structured, AI-generated tests — right from your Swift code.
+</p>
 
-## Overview
+<p align="left"><em>“The best time to write tests was yesterday. The second-best time is now.”</em><br><strong>—Kent Beck</strong></p>
 
-**SwiftTestGen** accelerates test coverage by automatically generating test cases using static code analysis and OpenAI’s language model. It helps developers reduce repetitive test writing, increase confidence in coverage, and maintain a clean test structure that integrates directly into their existing Swift workflows.
+<p align="left">
+  Testing isn’t optional. But writing tests manually? That should be.  
+  SwiftTestGen reads your code, understands it, and writes meaningful tests for you.  
+  Powered by static analysis. Enhanced with OpenAI.  
+  Built to fit the way you already work.
+</p>
 
-This tool automates the most tedious parts of test authoring—such as boilerplate, setup logic, and assertion patterns—by analyzing Swift source code and generating `XCTestCase` subclasses with meaningful test functions.
+<p align="left"><em>“Developers using AI will replace those who don’t.”</em></p>
 
+<p align="left">
+  From startups to scale — your tests stay sharp.  
+  From simple functions to deep logic — your edge cases get covered.  
+  Ship faster. Sleep better.
+</p>
 
+## What Is SwiftTestGen?
+
+**SwiftTestGen** is an intelligent test generation tool for Swift packages.
+
+It scans your Swift code using static analysis and generates unit tests using AI.  
+Use it as a SwiftPM plugin or from the command line — it’s modular, extensible, and fast.
+
+Whether you're just starting a project or growing a large codebase, SwiftTestGen helps you:
+
+- Catch bugs early  
+- Enforce testing discipline  
+- Increase coverage with less effort  
+
+## Why SwiftTestGen?
+
+Testing is critical. But testing is also:
+
+- Repetitive  
+- Time-consuming  
+- Easy to skip under pressure  
+
+Manual tests take time. Unwritten tests cost even more.
+
+> _“Automation is good, so long as you know exactly where to put the machine.”_  
+> **—Elon Musk**
+
+SwiftTestGen puts the machine in the right place: between your code and your confidence.
 
 ## Key Motivation
 
@@ -81,23 +125,26 @@ This will analyze your source code and generate test files under your `Tests/` f
 1. You define your core logic in a Swift package.
 2. You run SwiftTestGen either from CLI or as a plugin.
 3. SwiftTestGen:
-
-   * Parses your Swift types and functions
-   * Sends prompts to the AI with full context about each method
-   * Receives a fully formed test body using best practices
-   * Writes the corresponding `XCTestCase` class with embedded test methods
+   - Parses your Swift types and functions
+   - Sends prompts to the AI with full context about each method
+   - Receives a fully formed test body using best practices
+   - Writes the corresponding `XCTestCase` class with embedded test methods
 
 
 ## Why Use AI for Test Generation?
 
-Traditional code generation tools can only create boilerplate. By using a language model, SwiftTestGen is capable of:
+Traditional test tools create structure.
+SwiftTestGen creates substance.
 
-* Understanding function signatures, parameters, and edge cases
-* Producing high-quality test logic following common patterns
-* Tailoring assertions and setups dynamically based on function context
+AI understands:
+- Your function’s intent
+- Your edge cases
+- Your naming conventions
+- Your expected behaviors
 
-This leads to more meaningful test scaffolding, saving developers hours of manual effort and helping teams enforce consistent test writing across large codebases.
+Tools that understand our code free us to focus on what matters.
 
+SwiftTestGen doesn’t just make testing easier, it makes it smarter.
 
 ## Contributing
 
